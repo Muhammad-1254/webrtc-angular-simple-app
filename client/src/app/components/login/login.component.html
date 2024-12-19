@@ -1,0 +1,16 @@
+<div class="w-full h-full flex items-center justify-center">
+  <div class="w-[300px] flex gap-x-4 items-center">
+    <input
+      [(ngModel)]="inputValue"
+      placeholder="enter you username"
+      class="w-full py-1 px-4 border border-gray-300 text-black"
+    />
+
+    <button
+      (click)="addUser()"
+      class="px-2.5 py-1 rounded bg-green-500 text-white hover:bg-green-600"
+    >
+      Add
+    </button>
+  </div>
+</div>

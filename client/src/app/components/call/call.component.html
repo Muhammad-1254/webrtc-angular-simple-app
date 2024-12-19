@@ -1,0 +1,25 @@
+<div class="w-full h-full flex ">
+  <div class="w-[200px] h-full">
+    <app-users/>
+</div>
+
+  <div class="w-[calc(100%-200px)] h-full flex-col items-center justify-center ">
+      <app-stream/>
+
+
+      @if(callStatus()){
+
+        <div class=" w-full flex flex-col items-center justify-center ">
+          <p class="text-xl font-bold ">{{callStatus()}}</p>
+          <button class="bg-red-500 w-12 h-12 rounded-full flex items-center justify-center cursor-pointer"
+          (click)="endCallHandler()"
+          >
+          end-call
+          <!-- <mat-icon>call end
+          </mat-icon> -->
+        </button>
+        </div>
+
+      }
+  </div>
+</div>
