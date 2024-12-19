@@ -1,10 +1,8 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
 import express from "express";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 
-const allUsers = [];
+var allUsers = [];
 
 const app = express();
 const server = createServer(app);
@@ -19,11 +17,10 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log(
-    `Someone connected to socket server and socket id is ${socket.id}`
+    `user connected with socket Id: ${socket.id}`
   );
 
   socket.on("user-join", (username) => {
-    console.log("join user: ", username);
     // check if user exist then update user
     const userExist = allUsers.find((user) => user.username === username);
     if (userExist) {
@@ -46,16 +43,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("offer", ({ from, to, offer }) => {
-    console.log("offer: ", { from, to, offer });
     socket.to(to.id).emit("offer", { from, to, offer });
   });
 
   socket.on("answer", ({ from, to, answer }) => {
-    console.log("answer: ", { from, to, answer });
     socket.to(from.id).emit("answer", { from, to, answer });
   });
   socket.on("candidate", (candidate) => {
-    console.log({ candidate });
     socket.broadcast.emit("candidate", candidate);
   });
 
@@ -72,8 +66,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("User disconnected");
+    // remove user from allUsers list
+   allUsers = allUsers.filter((user) => user.id !== socket.id);
+    socket.broadcast.emit("all-users", allUsers); 
   });
+  
 });
 
 const PORT = process.env.PORT || 3000;
